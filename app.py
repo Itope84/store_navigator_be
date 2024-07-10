@@ -1,9 +1,26 @@
-import time
 from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+import os
 
 from svg_to_ndarray import FloorplanGrid, svg_to_ndarray
 
+load_dotenv()
+
 app = Flask(__name__)
+
+user = os.getenv("DATABASE_USER")
+password = os.getenv("DATABASE_PASSWORD")
+host = os.getenv("DATABASE_HOST")
+port = os.getenv("DATABASE_PORT")
+dbname = os.getenv("DATABASE_NAME")
+
+database_url = f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
 
 
 # get-route endpoint that takes start and end section_ids as query params and returns the route
