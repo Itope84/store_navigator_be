@@ -1,0 +1,8 @@
+*.txt
+!requirements.txt
+
+*.png
+
+*.csv
+*.ipynb
+*.json

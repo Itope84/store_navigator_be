@@ -114,8 +114,7 @@ class FloorplanGrid:
 
     def __init__(self, svg_file_path):
         self.grid = svg_to_ndarray(svg_file_path)
-        # save grid to file
-        np.savetxt("grid.txt", self.grid, fmt="%g")
+
         self.height, self.width = self.grid.shape
         paths, attributes, svg_attributes = svg2paths2(svg_file_path)
 

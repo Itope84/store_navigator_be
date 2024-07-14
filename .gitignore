@@ -3,14 +3,6 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
-.env
-
-*.txt
-*.png
-!requirements.txt
-floor_plan.png
-floor_plan_mini.png
-frame.png
-*.csv
+# all .env files in subfolders
+**/.env
 *.ipynb
-*.json

@@ -1,5 +1,9 @@
 import uuid
-from app import db
+
+from . import db
+
+
+# Reference: https://docs.sqlalchemy.org/en/20/orm/basic_relationships.html
 
 
 class Store(db.Model):
@@ -10,7 +14,14 @@ class Store(db.Model):
     address = db.Column(db.String(200), nullable=False)
     logo = db.Column(db.String(200), nullable=True)
     floor_plan = db.Column(db.String(200), nullable=True)
-    shelves = db.relationship("Shelf", backref="store", lazy=True)
+    shelves = db.relationship("Shelf", back_populates="store", lazy=True)
+
+
+product_shelves = db.Table(
+    "product_shelves",
+    db.Column("product_id", db.ForeignKey("products.id"), primary_key=True),
+    db.Column("shelf_id", db.ForeignKey("shelves.id"), primary_key=True),
+)
 
 
 class Product(db.Model):
@@ -21,7 +32,9 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(200), nullable=True)
     image = db.Column(db.String(200), nullable=True)
-    shelves = db.relationship("ProductShelf", back_populates="product")
+    shelves = db.relationship(
+        "Shelf", secondary=product_shelves, back_populates="products"
+    )
 
 
 class Shelf(db.Model):
@@ -33,20 +46,9 @@ class Shelf(db.Model):
     store_id = db.Column(
         db.UUID(as_uuid=True), db.ForeignKey("stores.id"), nullable=False
     )
-    description = db.Column(db.String(200), nullable=True)
+    description = db.Column(db.String(1000), nullable=True)
     shelf_number = db.Column(db.String(100), nullable=False)
-    products = db.relationship("ProductShelf", back_populates="shelf")
-
-
-class ProductShelf(db.Model):
-    __tablename__ = "product_shelf"
-
-    id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    product_id = db.Column(
-        db.UUID(as_uuid=True), db.ForeignKey("products.id"), primary_key=True
+    products = db.relationship(
+        "Product", secondary=product_shelves, back_populates="shelves"
     )
-    shelf_id = db.Column(
-        db.UUID(as_uuid=True), db.ForeignKey("shelves.id"), primary_key=True
-    )
-    product = db.relationship("Product", back_populates="shelves")
-    shelf = db.relationship("Shelf", back_populates="products")
+    store = db.relationship("Store", back_populates="shelves", lazy=True)
