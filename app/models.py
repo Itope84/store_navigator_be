@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import uuid
 
 from . import db
@@ -6,7 +7,14 @@ from . import db
 # Reference: https://docs.sqlalchemy.org/en/20/orm/basic_relationships.html
 
 
+@dataclass
 class Store(db.Model):
+    id: uuid.UUID
+    name: str
+    address: str
+    logo: str
+    floor_plan: str
+
     __tablename__ = "stores"
 
     id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -24,6 +32,7 @@ product_shelves = db.Table(
 )
 
 
+@dataclass
 class Product(db.Model):
     __tablename__ = "products"
 
@@ -37,6 +46,7 @@ class Product(db.Model):
     )
 
 
+@dataclass
 class Shelf(db.Model):
     __tablename__ = "shelves"
 
