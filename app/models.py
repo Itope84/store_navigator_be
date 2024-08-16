@@ -15,6 +15,20 @@ class Store(db.Model):
     logo: str
     floor_plan: str
 
+    @property
+    def c_shelves(self):
+        return [shelf.to_dict() for shelf in self.shelves]
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "name": self.name,
+            "address": self.address,
+            "logo": self.logo,
+            "floor_plan": self.floor_plan,
+            "shelves": self.c_shelves,
+        }
+
     __tablename__ = "stores"
 
     id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -34,6 +48,12 @@ product_shelves = db.Table(
 
 @dataclass
 class Product(db.Model):
+    id: uuid.UUID
+    name: str
+    price: float
+    description: str
+    image: str
+
     __tablename__ = "products"
 
     id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -42,12 +62,28 @@ class Product(db.Model):
     description = db.Column(db.String(200), nullable=True)
     image = db.Column(db.String(200), nullable=True)
     shelves = db.relationship(
-        "Shelf", secondary=product_shelves, back_populates="products"
+        "Shelf", secondary=product_shelves, back_populates="products", lazy=True
     )
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "name": self.name,
+            "price": self.price,
+            "description": self.description,
+            "image": self.image,
+        }
 
 
 @dataclass
 class Shelf(db.Model):
+    id: uuid.UUID
+    subcategory_name: str
+    section: str
+    store_id: uuid.UUID
+    description: str
+    shelf_number: str
+
     __tablename__ = "shelves"
 
     id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -62,3 +98,17 @@ class Shelf(db.Model):
         "Product", secondary=product_shelves, back_populates="shelves"
     )
     store = db.relationship("Store", back_populates="shelves", lazy=True)
+
+    @property
+    def map_node_id(self) -> str:
+        return f"section_{self.shelf_number}"
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "name": self.subcategory_name,
+            "section": self.section,
+            "store_id": str(self.store_id),
+            "description": self.description,
+            "map_node_id": self.map_node_id,
+        }
