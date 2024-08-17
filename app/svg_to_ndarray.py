@@ -33,6 +33,7 @@ def manhattan_distance(a, b):
 
 
 def held_karp(coords):
+    # TODO: modify to account for the fact that we probably want to end at section_checkout
     n = len(coords)
 
     # precompute the euclidean distance between each pair of coordinates
@@ -248,14 +249,20 @@ class FloorplanGrid:
 
         merged = [start, *sections]
 
-        # get the optimal route to traverse from start to all sections
+        # get the optimal route to traverse from start to all sections. optimal_path is a list of indices of the sections in the merged list
         optimal_path = held_karp(merged)
 
+        path_ids = [
+            section_ids[i - 1] if i != 0 else "section_entrance" for i in optimal_path
+        ]
         optimal_path_coords = [merged[p] for p in optimal_path]
 
         # get the route from each section to the next
         routes = [
-            self.astar(optimal_path_coords[i], optimal_path_coords[i + 1])
+            (
+                path_ids[i + 1],
+                self.astar(optimal_path_coords[i], optimal_path_coords[i + 1]),
+            )
             for i in range(len(optimal_path_coords) - 1)
         ]
 
