@@ -21,7 +21,7 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
         ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOST} '
-          cd ~/your_project &&
+          cd ~/storenav &&
           git pull origin main &&
           echo "DATABASE_URL=$DATABASE_URL" > .env &&
           docker-compose down &&
