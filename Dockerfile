@@ -2,11 +2,6 @@ FROM python:3.10-slim-buster
 
 WORKDIR /app
 
-# Install system dependencies
-RUN yum update -y && yum install -y \
-    gcc \
-    && yum clean all
-
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
