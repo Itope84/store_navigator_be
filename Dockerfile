@@ -10,8 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
 # Copy the rest of the application
-COPY wsgi.py .
-COPY app ./app
+COPY . .
 
 # Command to run the application
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
