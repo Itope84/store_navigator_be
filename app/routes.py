@@ -1,5 +1,8 @@
 from flask import jsonify, request, Flask
 from sqlalchemy import and_
+from urllib.parse import unquote_plus
+
+from app.search import bulk_search_products
 
 from .models import Product, Shelf, Store
 from .svg_to_ndarray import FloorplanGrid, svg_to_ndarray
@@ -33,6 +36,34 @@ def init_routes(app: Flask):
             products = Product.query.all()
 
         return jsonify(products)
+
+    @app.route("/products/bulk-search", methods=["GET"])
+    def products_multiline_search():
+        raw_queries = request.args.get("query", "")
+
+        if raw_queries:
+            decoded_queries = unquote_plus(raw_queries)
+
+            print(decoded_queries)
+
+            # find all \n in decoded_queries
+            # has_newline = decoded_queries.find("\n") != -1
+            # print("has newline", has_newline)
+
+            # # Split by both URL-encoded (%0A) and regular newlines
+            # queries = decoded_queries.replace("%0A", "\n")
+            # print(queries)
+            queries = decoded_queries.split("\n")
+
+            print(queries)
+
+            queries = [q.strip() for q in queries if q.strip()]
+
+            if queries:
+                results = bulk_search_products(queries)
+                return jsonify(results)
+
+        return jsonify({})
 
     @app.route("/stores/<store_id>/product-shelves", methods=["GET"])
     def get_product_shelves(store_id):

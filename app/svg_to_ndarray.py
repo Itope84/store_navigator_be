@@ -272,7 +272,7 @@ class FloorplanGrid:
 # run
 # if __name__ == "__main__":
 #     # print by row, inf should be printed as -
-#     # for row in grid:
+#     # for row  in grid:
 #     #     print(",".join(["-" if x == np.inf else "1" for x in row]))
 #     floorplan = FloorplanGrid("./floor_plan.svg")
 #     # print(floorplan.get_section_rect("section_0"))
