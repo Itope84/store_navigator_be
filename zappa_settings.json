@@ -1,6 +1,6 @@
 {
     "dev": {
-        "app_function": "app.app.app",
+        "app_function": "app.app",
         "aws_region": "eu-west-2",
         "project_name": "store-navigator",
         "runtime": "python3.10",
