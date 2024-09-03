@@ -41,8 +41,3 @@ db = SQLAlchemy(app)
 #     grid = svg_to_ndarray("./floor_plan_mini.svg")
 
 #     return jsonify(grid.tolist())
-
-
-if __name__ == "__main__":
-    # Listen on all public IPs on the network
-    app.run(host="0.0.0.0", port=8000, debug=True)
