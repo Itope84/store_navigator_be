@@ -4,6 +4,7 @@
         "aws_region": "eu-west-2",
         "project_name": "store-navigator",
         "runtime": "python3.10",
-        "s3_bucket": "storenav-api"
+        "s3_bucket": "storenav-api",
+        "slim_handler": true
     }
 }
