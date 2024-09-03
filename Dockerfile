@@ -3,9 +3,9 @@ FROM python:3.10-slim-buster
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN yum update -y && yum install -y \
     gcc \
-    && rm -rf /var/lib/apt/lists/*
+    && yum clean all
 
 # Install Python dependencies
 COPY requirements.txt .
