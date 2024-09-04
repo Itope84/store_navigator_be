@@ -17,6 +17,8 @@ app = Flask(__name__)
 
 database_url = os.getenv("DATABASE_URL")
 
+print(database_url)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
