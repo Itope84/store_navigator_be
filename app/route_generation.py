@@ -25,15 +25,29 @@ def svg_to_ndarray(svg_file_path):
     return ndarray
 
 
-# TODO: move to utils.py
 def manhattan_distance(a, b):
     # a and b are tuples of (x, y)
     # returns a float
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 
+# Alternative to the held-karp algorithm that uses a nearest neighbor approach to find the optimal route. This is much faster but less accurate. It is to be used when the number of sections is too large for the held-karp algorithm to be feasible.
+def nearest_neighbor(coords):
+    path = [0]  # Start with index 0
+    remaining = list(range(1, len(coords)))  # Indexes 1 to n-1
+
+    for _ in range(len(remaining)):
+        current_coord = coords[path[-1]]
+        next_idx = min(
+            remaining, key=lambda i: manhattan_distance(coords[i], current_coord)
+        )
+        path.append(next_idx)
+        remaining.remove(next_idx)
+
+    return path
+
+
 def held_karp(coords):
-    # TODO: modify to account for the fact that we probably want to end at section_checkout
     n = len(coords)
 
     # precompute the euclidean distance between each pair of coordinates
@@ -157,8 +171,6 @@ class FloorplanGrid:
 
         return sides[0] if sides else None
 
-    # TODO: increase the score for cells between 2 sections (2 infs). if for example, there are 10 cells between them, then the midpoint should be 1 and increase outwards from there.
-    # Also at the moment, 2 sections are so close but have an empty pixel between them throughe which routes go, need to modify the floor plan to remove that space (or modify the recommendation above so that the cost of going through that space is higher than going around it)
     def astar(self, start, end):
         # start and end are tuples of (x, y)
         # grid is a numpy array with inf for obstacles
@@ -250,7 +262,9 @@ class FloorplanGrid:
         merged = [start, *sections]
 
         # get the optimal route to traverse from start to all sections. optimal_path is a list of indices of the sections in the merged list
-        optimal_path = held_karp(merged)
+        optimal_path = (
+            nearest_neighbor(merged) if len(merged) >= 20 else held_karp(merged)
+        )
 
         path_ids = [
             section_ids[i - 1] if i != 0 else "section_entrance" for i in optimal_path

@@ -5,3 +5,5 @@ __pycache__/
 
 # all .env files in subfolders
 **/.env
+
+.DS_Store
