@@ -1,6 +1,6 @@
 import random
 import time
-from ..svg_to_ndarray import FloorplanGrid, svg_to_ndarray
+from ..route_generation import FloorplanGrid, svg_to_ndarray
 
 
 # def test_svg_to_ndarray():
