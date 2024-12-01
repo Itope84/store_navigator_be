@@ -44,18 +44,7 @@ def init_routes(app: Flask):
         if raw_queries:
             decoded_queries = unquote_plus(raw_queries)
 
-            print(decoded_queries)
-
-            # find all \n in decoded_queries
-            # has_newline = decoded_queries.find("\n") != -1
-            # print("has newline", has_newline)
-
-            # # Split by both URL-encoded (%0A) and regular newlines
-            # queries = decoded_queries.replace("%0A", "\n")
-            # print(queries)
             queries = decoded_queries.split("\n")
-
-            print(queries)
 
             queries = [q.strip() for q in queries if q.strip()]
 
@@ -100,7 +89,6 @@ def init_routes(app: Flask):
         if not section_ids:
             return jsonify([])
 
-        # TODO: get the store's map from the database
         floorplan = FloorplanGrid("app/floor_plan.svg")
 
         route = floorplan.get_optimal_routes(start, section_ids.split(","))
