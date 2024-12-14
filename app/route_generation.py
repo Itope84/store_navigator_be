@@ -263,7 +263,8 @@ class FloorplanGrid:
 
         # get the optimal route to traverse from start to all sections. optimal_path is a list of indices of the sections in the merged list
         optimal_path = (
-            nearest_neighbor(merged) if len(merged) >= 20 else held_karp(merged)
+            # nearest_neighbor(merged) if len(merged) >= 20 else 
+            held_karp(merged)
         )
 
         path_ids = [

@@ -5,7 +5,7 @@ from urllib.parse import unquote_plus
 from app.search import bulk_search_products
 
 from .models import Product, Shelf, Store
-from .svg_to_ndarray import FloorplanGrid, svg_to_ndarray
+from .route_generation import FloorplanGrid, svg_to_ndarray
 
 
 def init_routes(app: Flask):
