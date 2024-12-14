@@ -20,8 +20,6 @@ def svg_to_ndarray(svg_file_path):
     ndarray[ndarray > 0] = 10000
     ndarray[ndarray == 0] = 1
 
-    # ndarray = adjust_weights(ndarray)
-
     return ndarray
 
 
@@ -282,29 +280,3 @@ class FloorplanGrid:
         ]
 
         return routes
-
-
-# run
-# if __name__ == "__main__":
-#     # print by row, inf should be printed as -
-#     # for row  in grid:
-#     #     print(",".join(["-" if x == np.inf else "1" for x in row]))
-#     floorplan = FloorplanGrid("./floor_plan.svg")
-#     # print(floorplan.get_section_rect("section_0"))
-#     # print(floorplan.get_section_rect_with_padding("section_0", 1))
-#     # print(floorplan.get_section_aisle_midpoint("section_0"))
-
-#     arr = floorplan.get_section_rect("section_entrance")
-
-#     # print(floorplan.get_section_rect_with_padding("section_2", 1))
-
-#     start = (round((arr[0] + arr[1]) / 2), arr[2])
-#     end = floorplan.get_section_aisle_midpoint("section_34")
-
-#     print(start, end)
-
-#     # print column 38 of grid
-#     # print(",".join(["-" if x == np.inf else "1" for x in floorplan.grid[:, 38]]))
-
-#     path = floorplan.astar(start, end)
-#     print(path)
