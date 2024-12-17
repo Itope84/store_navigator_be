@@ -34,22 +34,29 @@ The API is deployed to https://api.storenav.uk/ and can be tested by visiting th
   - `query` (required): Multi-line string containing product names to search.
 - **Example**: https://api.storenav.uk/products/bulk-search?query=milk%0Abread%0Aeggs
 
+### 5. **GET /stores/<store_id>/product-shelves**
+- **Description**: Retrieve shelf information for specific products in a store.
+- **Parameters**:
+  - `store_id` (path): The ID of the store.
+  - `products` (query): Comma-separated list of product IDs.
+- **Example**: https://api.storenav.uk/stores/09a8c436-90bf-41f4-a85d-56daf1d2688e/product-shelves?products=1acd7e2d-d2b7-48d9-9a3c-489b040964e0,ea17e3a8-c622-4d3e-ad4c-9c43f6415241,ca830b23-3528-4071-aba8-c2174669ce81
 
-### 5. **GET /get-traveling-routes**
+
+### 6. **GET /get-traveling-routes**
 - **Description**: Retrieve an optimal route to travel through multiple shelves in the store starting from the entrance. The response is in the form of an ordered list of coordinates (pixels) on the store's map.
 - **Query Parameters**:
   - `start` (optional): Starting section ID (default: `section_entrance`).
   - `section_ids` (required): Comma-separated list of section IDs to visit.
 - **Example**: https://api.storenav.uk/get-traveling-routes?section_ids=section_1,section_4,section_10
 
-### 6. **GET /get-route**
+### 7. **GET /get-route**
 - **Description**: Retrieve a path between two sections in the store. The response is in the form of an ordered list of coordinates (pixels) on the store's map.
 - **Query Parameters**:
   - `start` (required): Starting section ID.
   - `end` (required): Ending section ID.
 - **Example**: https://api.storenav.uk/get-route?start=section_1&end=section_12
 
-### 7. **GET /get-grid**
+### 8. **GET /get-grid**
 - **Description**: Retrieve the grid representation of the store floor plan with 1s representing obstacles and 0s representing empty spaces.
 - **Example**: https://api.storenav.uk/get-grid
 
