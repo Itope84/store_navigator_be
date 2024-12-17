@@ -4,6 +4,58 @@
 
 This repository contains the backend source code for the Store Navigator application, written in Python. The backend handles route generation and product search and localization. The backend does not store any user inputs or user data.
 
+The API is deployed to https://api.storenav.uk/ and can be tested by visiting the routes defined in `app/routes.py` (e.g. https://api.storenav.uk/products will list all available products).
+
+## Available API Endpoints:
+
+### 1. **GET /stores**
+- **Description**: Retrieve all available stores.
+- **Example**: https://api.storenav.uk/stores
+
+### 2. **GET /stores/<store_id>/shelves**
+- **Description**: Retrieve all shelves in a specific store.
+- **Parameters**:
+  - `store_id` (path): The ID of the store.
+- **Example**: https://api.storenav.uk/stores/09a8c436-90bf-41f4-a85d-56daf1d2688e/shelves
+
+### 3. **GET /products**
+- **Description**: Retrieve products based on optional search criteria.
+- **Query Parameters**:
+  - `search` (optional): Search for products by name.
+  - `ids` (optional): Comma-separated list of product IDs to retrieve.
+- **Example**:
+  - List all products: https://api.storenav.uk/products
+  - Search by name: https://api.storenav.uk/products?search=milk
+  - Retrieve by IDs: https://api.storenav.uk/products?ids=a591e05c-f78e-42a4-b805-487e22e5f138
+
+### 4. **GET /products/bulk-search**
+- **Description**: Perform a bulk search for multiple products based on a multi-line query.
+- **Query Parameters**:
+  - `query` (required): Multi-line string containing product names to search.
+- **Example**: https://api.storenav.uk/products/bulk-search?query=milk%0Abread%0Aeggs
+
+
+### 5. **GET /get-traveling-routes**
+- **Description**: Retrieve an optimal route to travel through multiple shelves in the store starting from the entrance. The response is in the form of an ordered list of coordinates (pixels) on the store's map.
+- **Query Parameters**:
+  - `start` (optional): Starting section ID (default: `section_entrance`).
+  - `section_ids` (required): Comma-separated list of section IDs to visit.
+- **Example**: https://api.storenav.uk/get-traveling-routes?section_ids=section_1,section_4,section_10
+
+### 6. **GET /get-route**
+- **Description**: Retrieve a path between two sections in the store. The response is in the form of an ordered list of coordinates (pixels) on the store's map.
+- **Query Parameters**:
+  - `start` (required): Starting section ID.
+  - `end` (required): Ending section ID.
+- **Example**: https://api.storenav.uk/get-route?start=section_1&end=section_12
+
+### 7. **GET /get-grid**
+- **Description**: Retrieve the grid representation of the store floor plan with 1s representing obstacles and 0s representing empty spaces.
+- **Example**: https://api.storenav.uk/get-grid
+
+
+
+
 ## How to Run Locally
 
 ### Prerequisites
@@ -97,11 +149,7 @@ The application uses a PostgreSQL database to store the products and shelf infor
   ```
 
 6. **Test the Application**
-- Open a browser or API client (e.g., Postman) and view all products by visiting `http://127.0.0.1:5000/products`.
-
-- Get the route between two sections by visiting `http://127.0.0.1:5000/get-route?start=section_1&end=section_12`
-
-- Get the route to travel through multiple shelves from the entrance by visiting `http://127.0.0.1:5000/get-traveling-routes?section_ids=section_1,section_4,section_10,section_13,section_21`
+- You can test the application by opening a browser or API client (e.g., Postman) and visiting the API endpoints described above, replacing the domain name with `http://127.0.0.1:5000/`.
 
 ## Notes
 
